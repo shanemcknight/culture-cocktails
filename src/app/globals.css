@@ -7,7 +7,7 @@
   --warm: #FAF8F5;
   --gray-text: #6B7280;
   --gray-light: #9CA3AF;
-  --nav-height: 80px;
+  --nav-height: 90px;
 }
 
 /* ======== RESET ======== */
@@ -39,7 +39,7 @@ nav {
   height: 100%; padding: 0 40px;
   display: flex; align-items: center; justify-content: space-between;
 }
-.nav-logo img { height: 45px; }
+.nav-logo img { height: 56px; }
 .nav-links {
   display: flex; align-items: center; gap: 32px;
 }
@@ -66,8 +66,8 @@ nav {
   padding: calc(var(--nav-height) + 80px) 40px 80px;
 }
 .hero h1 {
-  font-size: clamp(2.2rem, 4.5vw, 3.4rem);
-  font-weight: 600;
+  font-size: clamp(1.5rem, 3vw, 2.3rem);
+  font-weight: 400;
   letter-spacing: -0.03em;
   line-height: 1.15;
   max-width: 700px;
@@ -443,7 +443,7 @@ footer { background: var(--black); color: var(--white); padding: 60px 40px 30px;
   .process-steps { grid-template-columns: 1fr; }
   .projects-grid { grid-template-columns: 1fr; }
   .categories-grid { grid-template-columns: 1fr 1fr; }
-  .hero h1 { font-size: 1.8rem; }
+  .hero h1 { font-size: 1.5rem; }
 }
 
 /* ======== ADMIN DASHBOARD ======== */
