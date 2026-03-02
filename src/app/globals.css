@@ -421,13 +421,9 @@ footer { background: var(--black); color: var(--white); padding: 60px 40px 30px;
 
 /* ======== ANIMATIONS ======== */
 .fade-up {
-  opacity: 0; transform: translateY(30px);
+  opacity: 1; transform: translateY(0);
   transition: opacity 0.7s ease, transform 0.7s ease;
 }
-.fade-up.visible { opacity: 1; transform: translateY(0); }
-.hero .hero-sub { transition-delay: 0.15s; }
-.hero .hero-proof { transition-delay: 0.3s; }
-.hero .hero-ctas { transition-delay: 0.45s; }
 
 /* ======== RESPONSIVE ======== */
 @media (max-width: 900px) {
