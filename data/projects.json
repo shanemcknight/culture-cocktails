@@ -1,0 +1,24 @@
+{
+  "projects": [
+    {
+      "id": "sample-1",
+      "title": "Premium RTD Margarita Line",
+      "category": "RTD Cocktails",
+      "description": "Developed a 4-SKU ready-to-drink margarita line for a national spirits brand. Clean label formulation with real lime juice and agave.",
+      "image": "/images/placeholder-project.jpg",
+      "client": "Patco Brands",
+      "date": "2025-11-01",
+      "featured": true
+    },
+    {
+      "id": "sample-2",
+      "title": "Craft Ginger Beer Reformulation",
+      "category": "Sodas & Seltzers",
+      "description": "Reformulated an existing ginger beer recipe for scalable production while maintaining the artisanal flavor profile.",
+      "image": "/images/placeholder-project.jpg",
+      "client": "Alameda Soda Company",
+      "date": "2025-09-15",
+      "featured": true
+    }
+  ]
+}
