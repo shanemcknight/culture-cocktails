@@ -1,24 +1,18 @@
 {
   "projects": [
     {
-      "id": "sample-1",
-      "title": "Premium RTD Margarita Line",
-      "category": "RTD Cocktails",
-      "description": "Developed a 4-SKU ready-to-drink margarita line for a national spirits brand. Clean label formulation with real lime juice and agave.",
-      "image": "/images/placeholder-project.jpg",
-      "client": "Patco Brands",
-      "date": "2025-11-01",
-      "featured": true
-    },
-    {
-      "id": "sample-2",
-      "title": "Craft Ginger Beer Reformulation",
-      "category": "Sodas & Seltzers",
-      "description": "Reformulated an existing ginger beer recipe for scalable production while maintaining the artisanal flavor profile.",
-      "image": "/images/placeholder-project.jpg",
+      "id": "1",
+      "title": "Diet Cola naturally sweetened with a Monk Fruit/Stevia blend",
+      "description": "Alameda Soda wanted a Diet Cola with zero artificial sweeteners, colors, or flavors — without alienating the loyal customers who already loved the original. We developed a clean-label reformulation using a Monk Fruit/Stevia blend that delivered full Diet Cola performance while maintaining the taste profile existing drinkers expected. The result: a premium, naturally sweetened cola that kept current fans happy and opened the door to health-conscious new ones.",
       "client": "Alameda Soda Company",
-      "date": "2025-09-15",
-      "featured": true
+      "category": "Beverage Development",
+      "location": "Alameda, CA",
+      "image": "/images/alameda-lab.jpg",
+      "testimonial": "Culture Cocktails solved a problem we'd been struggling with for years — how to go clean-label without losing the taste our customers love. They nailed it.",
+      "testimonialAuthor": "Alameda Soda Company",
+      "seoTitle": "Clean-Label Diet Cola Development | Culture Cocktails",
+      "seoDescription": "Reformulated Alameda Soda's Diet Cola with a natural Monk Fruit/Stevia blend — zero artificial sweeteners, colors, or flavors while preserving the original taste profile.",
+      "seoKeywords": "clean label beverage development, natural diet cola, monk fruit stevia soda, beverage reformulation, Alameda Soda Company, no artificial sweeteners"
     }
   ]
 }
