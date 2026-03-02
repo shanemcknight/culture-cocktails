@@ -117,7 +117,7 @@ export default function AboutPage() {
           </div>
           <div className="footer-contact">
             <h4>Get in Touch</h4>
-            <p>shane@culturecocktails.com</p>
+            <a href="mailto:shane@culturecocktails.co" style={{color: "rgba(255,255,255,0.5)", textDecoration: "none"}}>shane@culturecocktails.co</a>
           </div>
         </div>
         <div className="footer-bottom">

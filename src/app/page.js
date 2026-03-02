@@ -144,7 +144,7 @@ export default function HomePage() {
       <section className="about" id="about">
         <div className="about-grid">
           <div className="about-image fade-up">
-            <img src="/images/about-photo.jpg" alt="Culture Cocktails team" />
+            <img src="/images/about-photo.jpg" alt="Culture Cocktails team" style={{ width: '100%', maxHeight: '500px', objectFit: 'cover', objectPosition: 'center top', borderRadius: '12px' }} />
           </div>
           <div className="about-text fade-up">
             <p className="section-label">About Us</p>
@@ -192,7 +192,7 @@ export default function HomePage() {
           <p className="fade-up" style={{ maxWidth: '600px', margin: '0 auto 2rem', color: 'var(--gray-text)' }}>
             Tell us about your project and we&apos;ll get back to you within 24 hours.
           </p>
-          <form className="contact-form fade-up" action={`mailto:shane@culturecocktails.com`} method="POST" encType="text/plain">
+          <form className="contact-form fade-up" action={`mailto:shane@culturecocktails.co`} method="POST" encType="text/plain">
             <div className="form-row">
               <input type="text" name="name" placeholder="Your Name" required />
               <input type="email" name="email" placeholder="Your Email" required />
@@ -222,7 +222,7 @@ export default function HomePage() {
           </div>
           <div className="footer-contact">
             <h4>Get in Touch</h4>
-            <p>shane@culturecocktails.com</p>
+            <a href="mailto:shane@culturecocktails.co" style={{color: "rgba(255,255,255,0.5)", textDecoration: "none"}}>shane@culturecocktails.co</a>
           </div>
         </div>
         <div className="footer-bottom">
