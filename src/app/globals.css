@@ -16,8 +16,7 @@ html { scroll-behavior: smooth; }
 body { font-family: 'Sora', sans-serif; background: var(--warm); color: var(--black); overflow-x: hidden; }
 
 /* ============================================
-   NAV
-   ============================================ */
+/* ======== NAV ======== */
 nav {
   position: fixed; top: 0; width: 100%; z-index: 1000;
   background: rgba(248,247,244,0.92);
@@ -48,8 +47,7 @@ nav {
 .nav-cta:hover { background: #01497a !important; }
 
 /* ============================================
-   HERO
-   ============================================ */
+/* ======== HERO ======== */
 .hero {
   max-width: 1200px; margin: 0 auto;
   padding: calc(var(--nav-height) + 80px) 40px 60px;
@@ -96,8 +94,7 @@ nav {
 .btn-outline:hover { border-color: var(--blue); color: var(--blue); }
 
 /* ============================================
-   SERVICE TICKER (Flavorman-style scrolling bar)
-   ============================================ */
+/* ======== SERVICE TICKER ======== */
 .ticker-wrap {
   overflow: hidden;
   padding: 28px 0;
@@ -127,8 +124,7 @@ nav {
 
 /* ============================================
 /* ============================================
-   TRUSTED BY / CLIENT LOGOS
-   ============================================ */
+/* ======== TRUSTED BY / CLIENT LOGOS ======== */
 .trusted-by {
   max-width: 1200px; margin: 0 auto;
   padding: 50px 40px 60px;
@@ -153,8 +149,7 @@ nav {
   .trusted-logos img { height: 34px; }
 }
 
-   SERVICES (Flavorman "An Experience as Tasteful" section)
-   ============================================ */
+/* ======== SERVICES ======== */
 .services {
   max-width: 1200px; margin: 0 auto;
   padding: 80px 40px;
@@ -218,8 +213,7 @@ nav {
 .svc-link:hover { text-decoration: underline; }
 
 /* ============================================
-   STATS BAR (Flavorman "Just a Sip" section)
-   ============================================ */
+/* ======== STATS BAR ======== */
 .stats {
   background: var(--black);
   padding: 60px 40px;
@@ -247,8 +241,7 @@ nav {
 }
 
 /* ============================================
-   BEVERAGE CATEGORIES (Flavorman "If You Can Think It" grid)
-   ============================================ */
+/* ======== BEVERAGE CATEGORIES ======== */
 .categories {
   max-width: 1200px; margin: 0 auto;
   padding: 80px 40px;
@@ -289,8 +282,7 @@ nav {
 }
 
 /* ============================================
-   CASE STUDY (Flavorman "Our Client Stories")
-   ============================================ */
+/* ======== CASE STUDY ======== */
 .case-study {
   max-width: 1200px; margin: 0 auto;
   padding: 0 40px 80px;
@@ -330,8 +322,7 @@ nav {
 }
 
 /* ============================================
-   ABOUT / FOUNDER
-   ============================================ */
+/* ======== ABOUT / FOUNDER ======== */
 .about {
   max-width: 1200px; margin: 0 auto;
   padding: 80px 40px;
@@ -372,8 +363,7 @@ nav {
 }
 
 /* ============================================
-   PROCESS (Flavorman "See How We Work")
-   ============================================ */
+/* ======== PROCESS ======== */
 .process {
   background: var(--white);
   padding: 80px 40px;
@@ -413,8 +403,7 @@ nav {
 .step:last-child .step-connector { display: none; }
 
 /* ============================================
-   CONTACT FORM
-   ============================================ */
+/* ======== CONTACT FORM ======== */
 .contact {
   max-width: 1200px; margin: 0 auto;
   padding: 80px 40px;
@@ -498,8 +487,7 @@ nav {
 }
 
 /* ============================================
-   FOOTER
-   ============================================ */
+/* ======== FOOTER ======== */
 footer {
   border-top: 1px solid rgba(0,0,0,0.06);
   padding: 48px 40px;
@@ -521,8 +509,7 @@ footer {
 }
 
 /* ============================================
-   ANIMATIONS
-   ============================================ */
+/* ======== ANIMATIONS ======== */
 .fade-up {
   opacity: 0; transform: translateY(30px);
   transition: opacity 0.7s ease, transform 0.7s ease;
@@ -535,8 +522,7 @@ footer {
 .hero .hero-ctas { transition-delay: 0.45s; }
 
 /* ============================================
-   RESPONSIVE
-   ============================================ */
+/* ======== RESPONSIVE ======== */
 @media (max-width: 900px) {
   .nav-links { display: none; }
   .stats-inner { grid-template-columns: repeat(2, 1fr); gap: 32px; }
