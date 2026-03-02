@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { put } from '@vercel/blob';
+import { writeFile } from 'fs/promises';
+import path from 'path';
 
 function isAuthorized(request) {
   const authHeader = request.headers.get('authorization');
@@ -21,17 +22,16 @@ export async function POST(request) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
     }
 
-    // Upload to Vercel Blob
-    const blob = await put(`projects/${Date.now()}-${file.name}`, file, {
-      access: 'public',
-    });
+    const bytes = await file.arrayBuffer();
+    const buffer = Buffer.from(bytes);
+    const filename = `${Date.now()}-${file.name}`;
+    const filepath = path.join(process.cwd(), 'public', 'images', filename);
 
-    return NextResponse.json({ url: blob.url });
+    await writeFile(filepath, buffer);
+
+    return NextResponse.json({ url: `/images/${filename}` });
   } catch (err) {
     console.error('Upload error:', err);
-    return NextResponse.json(
-      { error: 'Upload failed. Make sure BLOB_READ_WRITE_TOKEN is set.' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
   }
 }
