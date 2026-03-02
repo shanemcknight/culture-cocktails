@@ -4,20 +4,29 @@ import { useState } from 'react';
 
 export default function ContactForm() {
   const [form, setForm] = useState({ name: '', email: '', company: '', message: '' });
-  const [status, setStatus] = useState('idle'); // idle | sending | success | error
+  const [status, setStatus] = useState('idle');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('sending');
 
     try {
-      const res = await fetch('/api/contact', {
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          access_key: 'f6933d83-1f43-4335-bb31-76c5b1951854',
+          from_name: 'Culture Cocktails Website',
+          subject: `New inquiry from ${form.name}${form.company ? ' at ' + form.company : ''}`,
+          name: form.name,
+          email: form.email,
+          company: form.company,
+          message: form.message,
+        }),
       });
 
-      if (res.ok) {
+      const data = await res.json();
+      if (data.success) {
         setStatus('success');
         setForm({ name: '', email: '', company: '', message: '' });
       } else {
