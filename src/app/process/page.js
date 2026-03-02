@@ -1,107 +1,55 @@
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'Our Process | Culture Cocktails',
+  title: 'Our Process',
   description: 'From discovery to launch — our proven four-step process takes your beverage from concept to shelf with zero guesswork.',
 };
 
 export default function ProcessPage() {
   const steps = [
     {
-      num: '01',
-      title: 'Discovery',
+      num: '01', title: 'Discovery', timeline: '1–2 weeks',
       desc: 'We learn your vision, target market, price point, and production goals.',
       details: 'Every project starts with a deep-dive conversation. We want to understand your brand, your audience, and what success looks like. We conduct competitive analysis, review your budget parameters, and define clear milestones for the project. By the end of Discovery, we have a detailed project brief that guides everything that follows.',
-      timeline: '1–2 weeks',
     },
     {
-      num: '02',
-      title: 'Formulation',
+      num: '02', title: 'Formulation', timeline: '4–8 weeks',
       desc: 'R&D creates your formula — iterating on taste, stability, and cost targets.',
       details: 'Our formulation team develops your recipe from scratch, working through multiple iterations to nail the flavor profile. We optimize for taste, shelf stability, ingredient cost, and production feasibility simultaneously. You taste and approve at every stage — nothing moves forward without your sign-off.',
-      timeline: '4–8 weeks',
     },
     {
-      num: '03',
-      title: 'Validation',
+      num: '03', title: 'Validation', timeline: '4–6 weeks',
       desc: 'Shelf-life testing, regulatory review, and production trial runs.',
       details: 'Once the formula is locked, we put it through rigorous validation. Accelerated shelf-life testing ensures your product holds up over time. We handle all regulatory filings — TTB formulas, FDA labeling, state compliance. Pilot production runs confirm the formula scales cleanly to manufacturing volumes.',
-      timeline: '4–6 weeks',
     },
     {
-      num: '04',
-      title: 'Launch',
+      num: '04', title: 'Launch', timeline: '2–4 weeks',
       desc: 'Manufacturing specs, co-packer coordination, and ongoing support.',
       details: 'We deliver a complete production package: final formula documentation, manufacturing specifications, packaging specs, and quality control protocols. We introduce you to vetted co-packers, oversee the first production run, and provide ongoing technical support as you scale.',
-      timeline: '2–4 weeks',
     },
   ];
 
   return (
     <>
-      <nav>
-        <div className="nav-inner">
-          <Link className="nav-logo" href="/"><img src="/images/culture-cocktails-logo.png" alt="Culture Cocktails" /></Link>
-          <ul className="nav-links">
-            <li><Link href="/services">Services</Link></li>
-            <li><Link href="/#work">Work</Link></li>
-            <li><Link href="/about">About</Link></li>
-            <li><Link href="/process">Process</Link></li>
-            <li><a href="/#contact" className="nav-cta">Start a Project</a></li>
-          </ul>
-        </div>
-      </nav>
-
-      <section className="process" style={{ paddingTop: '140px' }}>
-        <p className="section-label fade-up">Our Process</p>
-        <h2 className="section-title fade-up">Four steps from concept to shelf</h2>
-        <p className="fade-up" style={{ maxWidth: '680px', color: 'var(--gray-text)', lineHeight: 1.7, marginBottom: '3rem' }}>
+      <section className="max-w-[1200px] mx-auto px-6 md:px-10 pb-20" style={{ paddingTop: '140px' }}>
+        <p className="fade-up text-[0.72rem] font-semibold tracking-[0.18em] uppercase text-blue mb-4">Our Process</p>
+        <h2 className="fade-up text-3xl md:text-4xl font-medium tracking-tight mb-4">Four steps from concept to shelf</h2>
+        <p className="fade-up max-w-[680px] text-gray-text leading-relaxed mb-12">
           Our proven process eliminates guesswork and keeps your project on track. Every step has clear deliverables and timelines so you always know exactly where things stand.
         </p>
 
-        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+        <div className="max-w-[800px] mx-auto">
           {steps.map((step, i) => (
-            <div key={i} className="fade-up" style={{
-              display: 'flex',
-              gap: '2rem',
-              marginBottom: '3rem',
-              paddingBottom: '3rem',
-              borderBottom: i < steps.length - 1 ? '1px solid #e5e7eb' : 'none',
-              alignItems: 'flex-start',
-            }}>
-              <div style={{
-                minWidth: '64px',
-                height: '64px',
-                background: 'var(--blue)',
-                color: '#fff',
-                borderRadius: '16px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '1.4rem',
-                fontWeight: 700,
-              }}>
+            <div key={i} className="fade-up flex gap-8 mb-12 pb-12 items-start"
+                 style={{ borderBottom: i < steps.length - 1 ? '1px solid #e5e7eb' : 'none' }}>
+              <div className="min-w-[64px] h-16 bg-blue text-white rounded-2xl flex items-center justify-center text-xl font-bold shrink-0">
                 {step.num}
               </div>
               <div>
-                <h3 style={{ fontSize: '1.3rem', fontWeight: 600, marginBottom: '.5rem', color: 'var(--black)' }}>
-                  {step.title}
-                </h3>
-                <p style={{ fontWeight: 500, marginBottom: '.75rem', color: 'var(--black)' }}>
-                  {step.desc}
-                </p>
-                <p style={{ color: 'var(--gray-text)', lineHeight: 1.7, fontSize: '.92rem', marginBottom: '.75rem' }}>
-                  {step.details}
-                </p>
-                <span style={{
-                  display: 'inline-block',
-                  background: 'var(--blue-light)',
-                  color: 'var(--blue)',
-                  padding: '.3rem .75rem',
-                  borderRadius: '20px',
-                  fontSize: '.8rem',
-                  fontWeight: 600,
-                }}>
+                <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
+                <p className="font-medium mb-3">{step.desc}</p>
+                <p className="text-[0.92rem] text-gray-text leading-relaxed mb-3">{step.details}</p>
+                <span className="inline-block bg-blue-light text-blue px-3 py-1 rounded-full text-xs font-semibold">
                   Timeline: {step.timeline}
                 </span>
               </div>
@@ -110,54 +58,34 @@ export default function ProcessPage() {
         </div>
       </section>
 
-      <section className="stats">
-        <div className="stats-grid">
-          <div className="stat fade-up"><span className="stat-number">11–20</span><span className="stat-label">Weeks Typical Timeline</span></div>
-          <div className="stat fade-up"><span className="stat-number">100+</span><span className="stat-label">Products Launched</span></div>
-          <div className="stat fade-up"><span className="stat-number">4</span><span className="stat-label">Clear Milestones</span></div>
-          <div className="stat fade-up"><span className="stat-number">0</span><span className="stat-label">Guesswork</span></div>
+      {/* STATS */}
+      <section className="bg-black py-16 px-6 md:px-10">
+        <div className="max-w-[1200px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          {[
+            { num: '11–20', label: 'Weeks Typical Timeline' },
+            { num: '100+', label: 'Products Launched' },
+            { num: '4', label: 'Clear Milestones' },
+            { num: '0', label: 'Guesswork' },
+          ].map((s, i) => (
+            <div key={i} className="fade-up">
+              <span className="block text-3xl md:text-[2.8rem] font-bold text-white tracking-tight">{s.num}</span>
+              <span className="block text-xs text-white/50 mt-1">{s.label}</span>
+            </div>
+          ))}
         </div>
       </section>
 
-      <section className="contact" id="contact">
-        <div className="contact-inner">
-          <p className="section-label fade-up">Get Started</p>
-          <h2 className="section-title fade-up">Ready to start the process?</h2>
-          <p className="fade-up" style={{ maxWidth: '600px', margin: '0 auto 2rem', color: 'var(--gray-text)' }}>
-            Tell us about your project and we&apos;ll schedule a free Discovery call.
-          </p>
-          <div className="fade-up" style={{ textAlign: 'center' }}>
-            <a href="/#contact" className="btn-primary">Start Your Project</a>
-          </div>
+      {/* CTA */}
+      <section className="bg-white py-20 px-6 md:px-10 text-center">
+        <p className="fade-up text-[0.72rem] font-semibold tracking-[0.18em] uppercase text-blue mb-4">Get Started</p>
+        <h2 className="fade-up text-3xl md:text-4xl font-medium tracking-tight mb-4">Ready to start the process?</h2>
+        <p className="fade-up max-w-[600px] mx-auto text-gray-text mb-8">
+          Tell us about your project and we&apos;ll schedule a free Discovery call.
+        </p>
+        <div className="fade-up">
+          <Link href="/#contact" className="btn-primary">Start Your Project</Link>
         </div>
       </section>
-
-      <footer>
-        <div className="footer-inner">
-          <div className="footer-brand">
-            <img src="/images/culture-cocktails-logo.png" alt="Culture Cocktails" className="footer-logo" />
-            <p>Beverage development consultancy.<br />Concept to shelf, proven at scale.</p>
-          </div>
-          <div className="footer-links">
-            <h4>Quick Links</h4>
-            <ul>
-              <li><Link href="/services">Services</Link></li>
-              <li><Link href="/about">About</Link></li>
-              <li><Link href="/process">Process</Link></li>
-              <li><a href="/#contact">Contact</a></li>
-            </ul>
-          </div>
-          <div className="footer-contact">
-            <h4>Get in Touch</h4>
-            <a href="mailto:shane@culturecocktails.co" style={{color: "rgba(255,255,255,0.5)", textDecoration: "none"}}>shane@culturecocktails.co</a>
-          </div>
-        </div>
-        <div className="footer-bottom">
-          <p>&copy; {new Date().getFullYear()} Culture Cocktails. All rights reserved.</p>
-        </div>
-      </footer>
-
-      <script dangerouslySetInnerHTML={{ __html: `document.addEventListener('DOMContentLoaded',function(){var o=new IntersectionObserver(function(e){e.forEach(function(en){if(en.isIntersecting)en.target.classList.add('visible')})},{threshold:0.1});document.querySelectorAll('.fade-up').forEach(function(el){o.observe(el)})});` }} />
     </>
   );
 }

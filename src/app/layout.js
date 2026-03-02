@@ -1,14 +1,34 @@
 import './globals.css';
+import Nav from '@/components/Nav';
+import Footer from '@/components/Footer';
+import ScrollAnimations from '@/components/ScrollAnimations';
 
 export const metadata = {
-  title: 'Culture Cocktails | Beverage Development Consultancy',
-  description: 'We develop beverages from concept to shelf. Custom formulation, RTD cocktails, functional beverages, sodas, and more. 25+ years experience.',
-  keywords: 'beverage development, custom formulation, RTD cocktails, functional beverages, beverage consulting',
+  title: {
+    default: 'Culture Cocktails | Beverage Development Consultancy',
+    template: '%s | Culture Cocktails',
+  },
+  description:
+    'We develop beverages from concept to shelf. Custom formulation, RTD cocktails, functional beverages, sodas, and more. 25+ years experience.',
+  keywords:
+    'beverage development, custom formulation, RTD cocktails, functional beverages, beverage consulting',
+  metadataBase: new URL('https://culturecocktails.co'),
   openGraph: {
     title: 'Culture Cocktails | Beverage Development Consultancy',
-    description: 'From raw ingredient sourcing to packaging supply chain — beverage product development proven at scale.',
+    description:
+      'From raw ingredient sourcing to packaging supply chain — beverage product development proven at scale.',
+    url: 'https://culturecocktails.co',
+    siteName: 'Culture Cocktails',
     type: 'website',
+    locale: 'en_US',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Culture Cocktails | Beverage Development Consultancy',
+    description:
+      'From raw ingredient sourcing to packaging supply chain — beverage product development proven at scale.',
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({ children }) {
@@ -22,7 +42,12 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <Nav />
+        <main>{children}</main>
+        <Footer />
+        <ScrollAnimations />
+      </body>
     </html>
   );
 }
