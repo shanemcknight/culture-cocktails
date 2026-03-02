@@ -163,7 +163,7 @@ nav {
   flex-wrap: wrap; max-width: 800px; margin: 0 auto;
 }
 .trusted-logos img {
-  height: 44px; width: auto;
+  height: 88px; width: auto;
   object-fit: contain;
 }
 
