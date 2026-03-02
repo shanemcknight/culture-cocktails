@@ -6,7 +6,8 @@ export default function AdminDashboard() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [password, setPassword] = useState('');
   const [projects, setProjects] = useState([]);
-  const [view, setView] = useState('dashboard'); // dashboard | new | edit
+  const [inquiries, setInquiries] = useState([]);
+  const [view, setView] = useState('dashboard'); // dashboard | new | inbox
   const [editProject, setEditProject] = useState(null);
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -36,6 +37,7 @@ export default function AdminDashboard() {
       setPassword(savedPassword);
       setLoggedIn(true);
       loadProjects(savedPassword);
+      loadInquiries(savedPassword);
     }
   }, []);
 
@@ -49,15 +51,29 @@ export default function AdminDashboard() {
     }
   };
 
+  const loadInquiries = async (pw) => {
+    try {
+      const res = await fetch('/api/contact', {
+        headers: { 'Authorization': `Bearer ${pw}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setInquiries(data.inquiries || []);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    // Try to verify by making an authenticated request
     try {
       const res = await fetch('/api/projects');
       if (res.ok) {
         setLoggedIn(true);
         sessionStorage.setItem('admin_pw', password);
         loadProjects(password);
+        loadInquiries(password);
       }
     } catch {
       setMessage({ type: 'error', text: 'Login failed' });
@@ -293,6 +309,55 @@ export default function AdminDashboard() {
     );
   }
 
+  // INBOX VIEW
+  if (view === 'inbox') {
+    return (
+      <div className="admin-layout">
+        <div className="admin-header">
+          <h1>📬 Inbox</h1>
+          <a href="#" onClick={(e) => { e.preventDefault(); setView('dashboard'); }}>← Back</a>
+        </div>
+        <div className="admin-content">
+          <div className="admin-card">
+            <h2>Contact Form Submissions</h2>
+            {inquiries.length === 0 ? (
+              <p style={{ color: 'var(--gray-text)', textAlign: 'center', padding: '2rem 0' }}>
+                No inquiries yet. When someone fills out your contact form, they will appear here.
+              </p>
+            ) : (
+              inquiries.map((inq) => (
+                <div key={inq.id} style={{ padding: '1.25rem', borderBottom: '1px solid #e5e7eb' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '0.5rem' }}>
+                    <div>
+                      <strong style={{ fontSize: '1rem' }}>{inq.name}</strong>
+                      {inq.company && <span style={{ color: 'var(--gray-text)', fontSize: '0.85rem' }}> — {inq.company}</span>}
+                    </div>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--gray-light)' }}>
+                      {new Date(inq.date).toLocaleDateString()}
+                    </span>
+                  </div>
+                  <a href={'mailto:' + inq.email} style={{ fontSize: '0.85rem', color: 'var(--blue)', display: 'block', marginBottom: '0.5rem' }}>
+                    {inq.email}
+                  </a>
+                  <p style={{ fontSize: '0.9rem', color: 'var(--gray-text)', lineHeight: 1.6, whiteSpace: 'pre-wrap' }}>
+                    {inq.message}
+                  </p>
+                  <a
+                    href={'mailto:' + inq.email + '?subject=Re: Your Culture Cocktails Inquiry'}
+                    className="btn-admin"
+                    style={{ marginTop: '0.75rem', display: 'inline-block', padding: '0.5rem 1rem', fontSize: '0.8rem' }}
+                  >
+                    Reply
+                  </a>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // DASHBOARD
   return (
     <div className="admin-layout">
@@ -318,20 +383,27 @@ export default function AdminDashboard() {
             <div className="number">{projects.filter(p => p.featured).length}</div>
             <div className="label">Featured</div>
           </div>
-          <div className="stat-box">
-            <div className="number">{[...new Set(projects.map(p => p.category))].length}</div>
-            <div className="label">Categories</div>
+          <div className="stat-box" onClick={() => setView('inbox')} style={{ cursor: 'pointer' }}>
+            <div className="number">{inquiries.length}</div>
+            <div className="label">Inquiries</div>
           </div>
         </div>
 
-        {/* Quick Action */}
-        <div style={{ marginBottom: '1.5rem' }}>
+        {/* Quick Actions */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
           <button
             className="btn-admin"
             onClick={() => { setView('new'); setMessage(null); }}
-            style={{ width: '100%', padding: '1rem', fontSize: '1.1rem' }}
+            style={{ width: '100%', padding: '1rem', fontSize: '1.05rem' }}
           >
             📸 Add New Project
+          </button>
+          <button
+            className="btn-admin"
+            onClick={() => { setView('inbox'); setMessage(null); }}
+            style={{ width: '100%', padding: '1rem', fontSize: '1.05rem', background: inquiries.length > 0 ? '#166534' : '#6b7280' }}
+          >
+            📬 Inbox {inquiries.length > 0 ? `(${inquiries.length})` : ''}
           </button>
         </div>
 

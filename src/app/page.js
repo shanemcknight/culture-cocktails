@@ -1,5 +1,6 @@
 import { getProjects } from '@/lib/projects';
 import Link from 'next/link';
+import ContactForm from '@/components/ContactForm';
 
 export default function HomePage() {
   const projects = getProjects();
@@ -187,20 +188,23 @@ export default function HomePage() {
       {/* CONTACT */}
       <section className="contact" id="contact">
         <div className="contact-inner">
-          <p className="section-label fade-up">Get Started</p>
-          <h2 className="section-title fade-up">Ready to develop your next beverage?</h2>
-          <p className="fade-up" style={{ maxWidth: '600px', margin: '0 auto 2rem', color: 'var(--gray-text)' }}>
-            Tell us about your project and we&apos;ll get back to you within 24 hours.
-          </p>
-          <form className="contact-form fade-up" action={`mailto:shane@culturecocktails.co`} method="POST" encType="text/plain">
-            <div className="form-row">
-              <input type="text" name="name" placeholder="Your Name" required />
-              <input type="email" name="email" placeholder="Your Email" required />
+          <div className="contact-text">
+            <p className="section-label fade-up">Get Started</p>
+            <h2 className="section-title fade-up">Ready to develop your next beverage?</h2>
+            <p className="fade-up" style={{ color: 'var(--gray-text)', lineHeight: 1.7, marginBottom: '1.5rem' }}>
+              Tell us about your project and we&apos;ll get back to you within 24 hours.
+              Whether you&apos;re starting from scratch or scaling an existing recipe, we can help.
+            </p>
+            <div className="contact-details fade-up">
+              <div className="contact-detail-row">
+                <strong>Email</strong>
+                <a href="mailto:shane@culturecocktails.co">shane@culturecocktails.co</a>
+              </div>
             </div>
-            <input type="text" name="company" placeholder="Company Name" />
-            <textarea name="message" placeholder="Tell us about your project..." rows="5" required></textarea>
-            <button type="submit" className="btn-primary">Send Message</button>
-          </form>
+          </div>
+          <div className="contact-form-wrap fade-up">
+            <ContactForm />
+          </div>
         </div>
       </section>
 
