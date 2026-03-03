@@ -7,6 +7,9 @@ import CountUp from '@/components/CountUp';
 import ImageCarousel from '@/components/ImageCarousel';
 import HeroCarousel from '@/components/HeroCarousel';
 
+// Always fetch fresh project data so admin changes (reorder, new projects) go live immediately
+export const dynamic = 'force-dynamic';
+
 export default async function HomePage() {
   const projects = await getProjects();
   const recentPosts = getAllPosts().slice(0, 3);
