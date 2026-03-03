@@ -37,11 +37,11 @@ export default function Nav() {
           ? 'bg-warm/95 backdrop-blur-xl shadow-sm'
           : 'bg-warm/92 backdrop-blur-xl'
       }`}
-      style={{ height: '90px', borderBottom: '1px solid rgba(0,0,0,0.06)' }}
+      style={{ height: '110px', borderBottom: '1px solid rgba(0,0,0,0.06)' }}
     >
       <div className="max-w-[1200px] mx-auto h-full px-6 md:px-10 flex items-center justify-between">
         {/* Logo — 50% larger */}
-        <Link href="/" className="relative h-[84px] w-[240px]">
+        <Link href="/" className="relative h-[126px] w-[360px]">
           <Image
             src="/images/culture-cocktails-logo.png"
             alt="Culture Cocktails"
@@ -99,7 +99,7 @@ export default function Nav() {
 
       {/* Mobile menu — full screen overlay with solid background */}
       <div
-        className={`md:hidden fixed inset-0 top-[90px] z-40 transition-all duration-300 ${
+        className={`md:hidden fixed inset-0 top-[110px] z-40 transition-all duration-300 ${
           menuOpen
             ? 'opacity-100 pointer-events-auto'
             : 'opacity-0 pointer-events-none'

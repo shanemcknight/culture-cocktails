@@ -8,6 +8,9 @@
       "category": "Beverage Development",
       "location": "Alameda, CA",
       "image": "/images/AS-fountain-melt-diet-cola.jpg",
+      "images": [
+        "/images/AS-fountain-melt-diet-cola.jpg"
+      ],
       "testimonial": "Culture Cocktails solved a problem we'd been struggling with for years — how to go clean-label without losing the taste our customers love. They nailed it.",
       "testimonialAuthor": "Alameda Soda Company",
       "seoTitle": "Clean-Label Diet Cola Development | Culture Cocktails",

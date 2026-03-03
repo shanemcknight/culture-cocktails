@@ -14,9 +14,12 @@ export default function AdminPage() {
 
   const [newProject, setNewProject] = useState({
     title: '', description: '', client: '', category: 'Beverage Development',
-    image: '', location: '', testimonial: '', testimonialAuthor: '',
+    image: '', images: [], location: '', testimonial: '', testimonialAuthor: '',
     seoTitle: '', seoDescription: '', seoKeywords: '',
   });
+  const [newImageUrl, setNewImageUrl] = useState('');
+  const [editingProject, setEditingProject] = useState(null);
+  const [editImageUrl, setEditImageUrl] = useState('');
 
   const [siteSettings, setSiteSettings] = useState({
     stat1Number: '30+', stat1Label: 'Years Experience',
@@ -70,6 +73,72 @@ export default function AdminPage() {
     setTimeout(() => setSuccessMsg(''), 3000);
   };
 
+  // Add image to new project
+  const addImageToNew = () => {
+    if (!newImageUrl.trim()) return;
+    setNewProject({ ...newProject, images: [...newProject.images, newImageUrl.trim()] });
+    setNewImageUrl('');
+  };
+
+  const removeImageFromNew = (index) => {
+    setNewProject({ ...newProject, images: newProject.images.filter((_, i) => i !== index) });
+  };
+
+  const moveImageNew = (index, direction) => {
+    const imgs = [...newProject.images];
+    const swap = index + direction;
+    if (swap < 0 || swap >= imgs.length) return;
+    [imgs[index], imgs[swap]] = [imgs[swap], imgs[index]];
+    setNewProject({ ...newProject, images: imgs });
+  };
+
+  // Add image to existing project (edit mode)
+  const addImageToExisting = async (projectId) => {
+    if (!editImageUrl.trim()) return;
+    const project = projects.find(p => p.id === projectId);
+    if (!project) return;
+    const updatedImages = [...(project.images || []), editImageUrl.trim()];
+    try {
+      const res = await fetch('/api/projects', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + ADMIN_PASSWORD },
+        body: JSON.stringify({ id: projectId, images: updatedImages, image: updatedImages[0] }),
+      });
+      if (res.ok) { showSuccess('Image added!'); setEditImageUrl(''); loadProjects(); }
+    } catch (e) { setError('Failed to add image'); }
+  };
+
+  const removeImageFromExisting = async (projectId, index) => {
+    const project = projects.find(p => p.id === projectId);
+    if (!project) return;
+    const updatedImages = (project.images || []).filter((_, i) => i !== index);
+    try {
+      const res = await fetch('/api/projects', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + ADMIN_PASSWORD },
+        body: JSON.stringify({ id: projectId, images: updatedImages, image: updatedImages[0] || '' }),
+      });
+      if (res.ok) { showSuccess('Image removed'); loadProjects(); }
+    } catch (e) { setError('Failed to remove image'); }
+  };
+
+  const moveImageExisting = async (projectId, index, direction) => {
+    const project = projects.find(p => p.id === projectId);
+    if (!project) return;
+    const imgs = [...(project.images || [])];
+    const swap = index + direction;
+    if (swap < 0 || swap >= imgs.length) return;
+    [imgs[index], imgs[swap]] = [imgs[swap], imgs[index]];
+    try {
+      const res = await fetch('/api/projects', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + ADMIN_PASSWORD },
+        body: JSON.stringify({ id: projectId, images: imgs, image: imgs[0] }),
+      });
+      if (res.ok) { loadProjects(); }
+    } catch (e) { setError('Failed to reorder images'); }
+  };
+
   const handleAddProject = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -77,6 +146,7 @@ export default function AdminPage() {
       const project = {
         ...newProject, id: Date.now().toString(),
         createdAt: new Date().toISOString(),
+        image: newProject.images[0] || newProject.image || '',
       };
       const res = await fetch('/api/projects', {
         method: 'POST',
@@ -87,7 +157,7 @@ export default function AdminPage() {
         showSuccess('Project added successfully!');
         setNewProject({
           title: '', description: '', client: '', category: 'Beverage Development',
-          image: '', location: '', testimonial: '', testimonialAuthor: '',
+          image: '', images: [], location: '', testimonial: '', testimonialAuthor: '',
           seoTitle: '', seoDescription: '', seoKeywords: '',
         });
         loadProjects();
@@ -198,16 +268,107 @@ export default function AdminPage() {
               </div>
             ) : (
               projects.map((project) => (
-                <div className="project-list-item" key={project.id}>
-                  {project.image && <img src={project.image} alt={project.title} />}
-                  <div className="info">
-                    <h3>{project.title}</h3>
-                    <p>{project.client && <span>{project.client} &bull; </span>}{project.category}{project.location && <span> &bull; {project.location}</span>}</p>
+                <div key={project.id} style={{ borderBottom: '1px solid #e5e7eb', paddingBottom: '20px', marginBottom: '20px' }}>
+                  <div className="project-list-item">
+                    {(project.images?.[0] || project.image) && (
+                      <img src={project.images?.[0] || project.image} alt={project.title} />
+                    )}
+                    <div className="info">
+                      <h3>{project.title}</h3>
+                      <p>
+                        {project.client && <span>{project.client} &bull; </span>}
+                        {project.category}
+                        {project.location && <span> &bull; {project.location}</span>}
+                        {project.images && <span> &bull; {project.images.length} image{project.images.length !== 1 ? 's' : ''}</span>}
+                      </p>
+                    </div>
+                    <div className="actions" style={{ display: 'flex', gap: '8px' }}>
+                      <button
+                        onClick={() => setEditingProject(editingProject === project.id ? null : project.id)}
+                        className="btn-admin"
+                        style={{ padding: '6px 12px', fontSize: '0.8rem', background: '#025D9F' }}
+                      >
+                        {editingProject === project.id ? 'Close' : 'Manage Images'}
+                      </button>
+                      <button onClick={() => handleDeleteProject(project.id)}
+                        className="btn-admin danger" style={{ padding: '6px 12px', fontSize: '0.8rem' }}>Delete</button>
+                    </div>
                   </div>
-                  <div className="actions">
-                    <button onClick={() => handleDeleteProject(project.id)}
-                      className="btn-admin danger" style={{ padding: '6px 12px', fontSize: '0.8rem' }}>Delete</button>
-                  </div>
+
+                  {/* Expanded image management panel */}
+                  {editingProject === project.id && (
+                    <div style={{ marginTop: '16px', padding: '20px', background: '#f9fafb', borderRadius: '12px', border: '1px solid #e5e7eb' }}>
+                      <h4 style={{ fontSize: '0.95rem', fontWeight: 600, marginBottom: '12px' }}>
+                        Project Images ({(project.images || []).length})
+                      </h4>
+
+                      {/* Current images grid */}
+                      {(project.images || []).length > 0 ? (
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '12px', marginBottom: '16px' }}>
+                          {(project.images || []).map((img, idx) => (
+                            <div key={idx} style={{
+                              position: 'relative', borderRadius: '8px', overflow: 'hidden',
+                              border: idx === 0 ? '2px solid #025D9F' : '1px solid #e5e7eb',
+                              background: '#fff',
+                            }}>
+                              <img src={img} alt={`Image ${idx + 1}`} style={{ width: '100%', height: '120px', objectFit: 'cover' }} />
+                              {idx === 0 && (
+                                <span style={{
+                                  position: 'absolute', top: '4px', left: '4px',
+                                  background: '#025D9F', color: '#fff', fontSize: '0.65rem',
+                                  fontWeight: 700, padding: '2px 6px', borderRadius: '4px',
+                                }}>PRIMARY</span>
+                              )}
+                              <div style={{ padding: '6px', display: 'flex', gap: '4px', justifyContent: 'center' }}>
+                                <button onClick={() => moveImageExisting(project.id, idx, -1)}
+                                  disabled={idx === 0}
+                                  style={{
+                                    border: 'none', background: idx === 0 ? '#e5e7eb' : '#dbeafe', cursor: idx === 0 ? 'default' : 'pointer',
+                                    borderRadius: '4px', padding: '3px 8px', fontSize: '0.7rem', fontWeight: 600,
+                                  }}>&#9664;</button>
+                                <button onClick={() => moveImageExisting(project.id, idx, 1)}
+                                  disabled={idx === (project.images || []).length - 1}
+                                  style={{
+                                    border: 'none', background: idx === (project.images || []).length - 1 ? '#e5e7eb' : '#dbeafe', cursor: idx === (project.images || []).length - 1 ? 'default' : 'pointer',
+                                    borderRadius: '4px', padding: '3px 8px', fontSize: '0.7rem', fontWeight: 600,
+                                  }}>&#9654;</button>
+                                <button onClick={() => removeImageFromExisting(project.id, idx)}
+                                  style={{
+                                    border: 'none', background: '#fee2e2', color: '#dc2626', cursor: 'pointer',
+                                    borderRadius: '4px', padding: '3px 8px', fontSize: '0.7rem', fontWeight: 600,
+                                  }}>&#10005;</button>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p style={{ fontSize: '0.85rem', color: '#9CA3AF', marginBottom: '16px' }}>No images yet. Add one below.</p>
+                      )}
+
+                      {/* Add new image */}
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        <input
+                          type="text"
+                          value={editImageUrl}
+                          onChange={(e) => setEditImageUrl(e.target.value)}
+                          placeholder="/images/filename.jpg or paste URL"
+                          onKeyDown={(e) => { if (e.key === 'Enter') addImageToExisting(project.id); }}
+                          style={{
+                            flex: 1, padding: '10px 14px', border: '1.5px solid #d1d5db',
+                            borderRadius: '8px', fontSize: '0.85rem', fontFamily: "'Sora', sans-serif",
+                            outline: 'none', boxSizing: 'border-box',
+                          }}
+                        />
+                        <button onClick={() => addImageToExisting(project.id)} className="btn-admin"
+                          style={{ padding: '10px 20px', fontSize: '0.85rem', whiteSpace: 'nowrap' }}>
+                          + Add Image
+                        </button>
+                      </div>
+                      <p style={{ fontSize: '0.72rem', color: '#9CA3AF', marginTop: '6px' }}>
+                        Add images to public/images/ in GitHub, then enter the path (e.g. /images/my-photo.jpg). First image = primary display image.
+                      </p>
+                    </div>
+                  )}
                 </div>
               ))
             )}
@@ -252,12 +413,45 @@ export default function AdminPage() {
                   placeholder="Describe the project, what you did, and the results..." rows={4} />
               </div>
               <div className="form-group">
-                <label>Image URL</label>
-                <input type="text" value={newProject.image}
-                  onChange={(e) => setNewProject({ ...newProject, image: e.target.value })}
-                  placeholder="Paste an image URL or use /images/filename.jpg" />
+                <label>Project Images</label>
+                {/* Current images for new project */}
+                {newProject.images.length > 0 && (
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))', gap: '10px', marginBottom: '12px' }}>
+                    {newProject.images.map((img, idx) => (
+                      <div key={idx} style={{
+                        position: 'relative', borderRadius: '8px', overflow: 'hidden',
+                        border: idx === 0 ? '2px solid #025D9F' : '1px solid #e5e7eb', background: '#fff',
+                      }}>
+                        <img src={img} alt={`Image ${idx + 1}`} style={{ width: '100%', height: '90px', objectFit: 'cover' }} />
+                        {idx === 0 && (
+                          <span style={{
+                            position: 'absolute', top: '3px', left: '3px',
+                            background: '#025D9F', color: '#fff', fontSize: '0.6rem',
+                            fontWeight: 700, padding: '1px 5px', borderRadius: '3px',
+                          }}>PRIMARY</span>
+                        )}
+                        <div style={{ padding: '4px', display: 'flex', gap: '3px', justifyContent: 'center' }}>
+                          <button type="button" onClick={() => moveImageNew(idx, -1)} disabled={idx === 0}
+                            style={{ border: 'none', background: idx === 0 ? '#e5e7eb' : '#dbeafe', cursor: idx === 0 ? 'default' : 'pointer', borderRadius: '3px', padding: '2px 6px', fontSize: '0.65rem', fontWeight: 600 }}>&#9664;</button>
+                          <button type="button" onClick={() => moveImageNew(idx, 1)} disabled={idx === newProject.images.length - 1}
+                            style={{ border: 'none', background: idx === newProject.images.length - 1 ? '#e5e7eb' : '#dbeafe', cursor: idx === newProject.images.length - 1 ? 'default' : 'pointer', borderRadius: '3px', padding: '2px 6px', fontSize: '0.65rem', fontWeight: 600 }}>&#9654;</button>
+                          <button type="button" onClick={() => removeImageFromNew(idx)}
+                            style={{ border: 'none', background: '#fee2e2', color: '#dc2626', cursor: 'pointer', borderRadius: '3px', padding: '2px 6px', fontSize: '0.65rem', fontWeight: 600 }}>&#10005;</button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <input type="text" value={newImageUrl}
+                    onChange={(e) => setNewImageUrl(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addImageToNew(); } }}
+                    placeholder="/images/filename.jpg or paste URL" />
+                  <button type="button" onClick={addImageToNew} className="btn-admin"
+                    style={{ padding: '10px 16px', fontSize: '0.85rem', whiteSpace: 'nowrap' }}>+ Add</button>
+                </div>
                 <p style={{ fontSize: '0.75rem', color: '#9CA3AF', marginTop: '4px' }}>
-                  Tip: Upload images to public/images/ in your GitHub repo, then use /images/filename.jpg</p>
+                  Add images to public/images/ in your GitHub repo, then enter the path. First image = primary/hero image. You can add multiple and reorder them.</p>
               </div>
             </div>
 

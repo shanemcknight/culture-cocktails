@@ -2,6 +2,7 @@ import './globals.css';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import ScrollAnimations from '@/components/ScrollAnimations';
+import FloatingCTA from '@/components/FloatingCTA';
 
 export const metadata = {
   title: {
@@ -46,6 +47,7 @@ export default function RootLayout({ children }) {
         <Nav />
         <main>{children}</main>
         <Footer />
+        <FloatingCTA />
         <ScrollAnimations />
       </body>
     </html>
