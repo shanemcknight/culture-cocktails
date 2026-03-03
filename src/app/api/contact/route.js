@@ -1,17 +1,5 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-
-const DATA_FILE = path.join(process.cwd(), 'data', 'inquiries.json');
-
-function getInquiries() {
-  try {
-    const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-    return data.inquiries || [];
-  } catch {
-    return [];
-  }
-}
+import { supabase } from '@/lib/supabase';
 
 // POST /api/contact — receive a form submission
 export async function POST(request) {
@@ -23,25 +11,20 @@ export async function POST(request) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    const inquiry = {
-      id: `inq-${Date.now()}`,
-      name,
-      email,
-      company: company || '',
-      message,
-      date: new Date().toISOString(),
-      read: false,
-    };
+    const { error } = await supabase
+      .from('inquiries')
+      .insert([{
+        name,
+        email,
+        company: company || '',
+        message,
+        read: false,
+      }]);
 
-    // Save to file
-    let data;
-    try {
-      data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-    } catch {
-      data = { inquiries: [] };
+    if (error) {
+      console.error('Contact form error:', error);
+      return NextResponse.json({ error: 'Server error' }, { status: 500 });
     }
-    data.inquiries.unshift(inquiry);
-    fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
 
     return NextResponse.json({ success: true });
   } catch (err) {
@@ -61,6 +44,14 @@ export async function GET(request) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const inquiries = getInquiries();
-  return NextResponse.json({ inquiries });
+  const { data, error } = await supabase
+    .from('inquiries')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    return NextResponse.json({ error: 'Failed to fetch inquiries' }, { status: 500 });
+  }
+
+  return NextResponse.json({ inquiries: data || [] });
 }

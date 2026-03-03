@@ -7,8 +7,8 @@ import CountUp from '@/components/CountUp';
 import ImageCarousel from '@/components/ImageCarousel';
 import HeroCarousel from '@/components/HeroCarousel';
 
-export default function HomePage() {
-  const projects = getProjects();
+export default async function HomePage() {
+  const projects = await getProjects();
   const recentPosts = getAllPosts().slice(0, 3);
 
   const services = [

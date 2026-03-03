@@ -1,52 +1,74 @@
-import fs from 'fs';
-import path from 'path';
+import { supabase } from './supabase';
 
-const DATA_FILE = path.join(process.cwd(), 'data', 'projects.json');
+export async function getProjects() {
+  const { data, error } = await supabase
+    .from('projects')
+    .select('*')
+    .order('created_at', { ascending: false });
 
-export function getProjects() {
-  try {
-    const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-    return data.projects || [];
-  } catch {
+  if (error) {
+    console.error('Error fetching projects:', error);
     return [];
   }
+  return data || [];
 }
 
-export function getProject(id) {
-  const projects = getProjects();
-  return projects.find((p) => p.id === id) || null;
+export async function getProject(id) {
+  const { data, error } = await supabase
+    .from('projects')
+    .select('*')
+    .eq('id', id)
+    .single();
+
+  if (error) return null;
+  return data;
 }
 
-export function addProject(project) {
-  const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-  const newProject = {
-    ...project,
-    id: project.id || `project-${Date.now()}`,
-    date: project.date || new Date().toISOString().split('T')[0],
-  };
-  data.projects.unshift(newProject);
-  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
-  return newProject;
+export async function addProject(project) {
+  const { data, error } = await supabase
+    .from('projects')
+    .insert([project])
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error adding project:', error);
+    return null;
+  }
+  return data;
 }
 
-export function updateProject(id, updates) {
-  const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-  const index = data.projects.findIndex((p) => p.id === id);
-  if (index === -1) return null;
-  data.projects[index] = { ...data.projects[index], ...updates };
-  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
-  return data.projects[index];
+export async function updateProject(id, updates) {
+  const { data, error } = await supabase
+    .from('projects')
+    .update(updates)
+    .eq('id', id)
+    .select()
+    .single();
+
+  if (error) {
+    console.error('Error updating project:', error);
+    return null;
+  }
+  return data;
 }
 
-export function deleteProject(id) {
-  const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-  data.projects = data.projects.filter((p) => p.id !== id);
-  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
+export async function deleteProject(id) {
+  const { error } = await supabase
+    .from('projects')
+    .delete()
+    .eq('id', id);
+
+  if (error) {
+    console.error('Error deleting project:', error);
+    return false;
+  }
   return true;
 }
 
-export function getFeaturedProjects() {
-  return getProjects().filter((p) => p.featured);
+export async function getFeaturedProjects() {
+  const projects = await getProjects();
+  return projects.filter((p) => p.featured);
 }
 
 export const CATEGORIES = [
