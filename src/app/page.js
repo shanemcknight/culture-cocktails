@@ -172,8 +172,6 @@ export default async function HomePage() {
                 <HeroCarousel
                   images={[
                     { src: '/images/hero-lab.jpg', alt: 'Beverage formulation in the lab' },
-                    { src: '/images/AS-diet-cola-can.jpg', alt: 'Alameda Soda Diet Cola can' },
-                    { src: '/images/AS-fountain-melt-diet-cola.jpg', alt: 'Alameda Soda fountain pour' },
                   ]}
                   interval={5000}
                 />
