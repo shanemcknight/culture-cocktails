@@ -1,8 +1,11 @@
 'use client';
 
 import { useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 
 export default function ScrollAnimations() {
+  const pathname = usePathname();
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -15,12 +18,18 @@ export default function ScrollAnimations() {
       { threshold: 0.1 }
     );
 
-    document.querySelectorAll('.fade-up').forEach((el) => {
-      observer.observe(el);
-    });
+    // Small delay to ensure new page content is in the DOM
+    const timer = setTimeout(() => {
+      document.querySelectorAll('.fade-up').forEach((el) => {
+        observer.observe(el);
+      });
+    }, 50);
 
-    return () => observer.disconnect();
-  }, []);
+    return () => {
+      clearTimeout(timer);
+      observer.disconnect();
+    };
+  }, [pathname]); // Re-run whenever the route changes
 
   return null;
 }
