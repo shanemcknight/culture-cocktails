@@ -40,8 +40,8 @@ export default function Nav() {
       style={{ height: '90px', borderBottom: '1px solid rgba(0,0,0,0.06)' }}
     >
       <div className="max-w-[1200px] mx-auto h-full px-6 md:px-10 flex items-center justify-between">
-        {/* Logo */}
-        <Link href="/" className="relative h-14 w-40">
+        {/* Logo — 50% larger */}
+        <Link href="/" className="relative h-[84px] w-[240px]">
           <Image
             src="/images/culture-cocktails-logo.png"
             alt="Culture Cocktails"
@@ -76,7 +76,7 @@ export default function Nav() {
         {/* Mobile hamburger */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5"
+          className="md:hidden flex flex-col justify-center items-center w-10 h-10 gap-1.5 relative z-50"
           aria-label="Toggle menu"
         >
           <span
@@ -97,30 +97,55 @@ export default function Nav() {
         </button>
       </div>
 
-      {/* Mobile menu overlay */}
-      {menuOpen && (
-        <div className="md:hidden fixed inset-0 top-[90px] bg-warm z-40">
-          <div className="flex flex-col items-center pt-12 gap-6">
+      {/* Mobile menu — full screen overlay with solid background */}
+      <div
+        className={`md:hidden fixed inset-0 top-[90px] z-40 transition-all duration-300 ${
+          menuOpen
+            ? 'opacity-100 pointer-events-auto'
+            : 'opacity-0 pointer-events-none'
+        }`}
+      >
+        {/* Dark overlay behind menu */}
+        <div
+          className="absolute inset-0 bg-black/20"
+          onClick={() => setMenuOpen(false)}
+        />
+
+        {/* Menu panel — slides down from top */}
+        <div
+          className={`relative bg-white shadow-2xl rounded-b-2xl mx-4 mt-2 p-8 transition-all duration-300 ${
+            menuOpen ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0'
+          }`}
+          style={{ borderTop: '3px solid #025D9F' }}
+        >
+          <div className="flex flex-col gap-1">
             {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className="text-lg font-medium text-black hover:text-blue transition-colors"
+                className="text-base font-medium text-black hover:text-blue transition-colors py-3 px-4 rounded-lg hover:bg-blue-light/50"
               >
                 {link.label}
               </Link>
             ))}
+          </div>
+
+          <div className="mt-6 pt-6" style={{ borderTop: '1px solid #e5e7eb' }}>
             <Link
               href="/#contact"
               onClick={() => setMenuOpen(false)}
-              className="btn-primary mt-4"
+              className="btn-primary block text-center w-full"
             >
               Start a Project
             </Link>
           </div>
+
+          <p className="text-xs text-gray-light text-center mt-4">
+            shane@culturecocktails.co
+          </p>
         </div>
-      )}
+      </div>
     </nav>
   );
 }
