@@ -5,6 +5,7 @@ import Link from 'next/link';
 import ContactForm from '@/components/ContactForm';
 import CountUp from '@/components/CountUp';
 import ImageCarousel from '@/components/ImageCarousel';
+import HeroCarousel from '@/components/HeroCarousel';
 
 export default function HomePage() {
   const projects = getProjects();
@@ -165,22 +166,17 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* Hero image */}
+            {/* Hero image carousel — auto-rotates */}
             <div className="fade-up hidden lg:block">
               <div className="relative h-[460px] rounded-2xl overflow-hidden shadow-2xl">
-                <Image
-                  src="/images/hero-lab.jpg"
-                  alt="Beverage formulation in the lab"
-                  fill
-                  className="object-cover"
-                  priority
+                <HeroCarousel
+                  images={[
+                    { src: '/images/hero-lab.jpg', alt: 'Beverage formulation in the lab' },
+                    { src: '/images/AS-diet-cola-can.jpg', alt: 'Alameda Soda Diet Cola can' },
+                    { src: '/images/AS-fountain-melt-diet-cola.jpg', alt: 'Alameda Soda fountain pour' },
+                  ]}
+                  interval={5000}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                {/* Floating stat card */}
-                <div className="absolute bottom-6 left-6 bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-lg">
-                  <span className="block text-2xl font-bold text-blue">100+</span>
-                  <span className="block text-xs text-gray-text">Products Launched</span>
-                </div>
               </div>
             </div>
           </div>
