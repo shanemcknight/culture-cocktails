@@ -182,6 +182,30 @@ export default function AdminPage() {
     } catch (e) { setError('Failed to delete project'); }
   };
 
+  // Move project up or down in display order
+  const moveProject = async (projectId, direction) => {
+    try {
+      const res = await fetch('/api/projects/reorder', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + ADMIN_PASSWORD },
+        body: JSON.stringify({ projectId, direction }),
+      });
+      if (res.ok) { loadProjects(); }
+      else { setError('Failed to reorder project'); }
+    } catch (e) { setError('Failed to reorder project'); }
+  };
+
+  // Initialize display order for existing projects (one-time)
+  const initDisplayOrder = async () => {
+    try {
+      const res = await fetch('/api/projects/reorder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + ADMIN_PASSWORD },
+      });
+      if (res.ok) { showSuccess('Display order initialized!'); loadProjects(); }
+    } catch (e) { setError('Failed to initialize order'); }
+  };
+
   const categories = [
     'Beverage Development', 'Brand Strategy', 'Product Launch', 'Private Label',
     'Spirits', 'Wine', 'Beer', 'RTD Cocktails', 'Non-Alcoholic', 'Consulting',
@@ -260,16 +284,48 @@ export default function AdminPage() {
 
         {activeTab === 'projects' && (
           <div className="admin-card">
-            <h2>Portfolio Projects ({projects.length})</h2>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <h2 style={{ margin: 0 }}>Portfolio Projects ({projects.length})</h2>
+              {projects.length > 0 && (
+                <button onClick={initDisplayOrder} className="btn-admin"
+                  style={{ padding: '6px 14px', fontSize: '0.75rem', background: '#6B7280' }}>
+                  Reset Order
+                </button>
+              )}
+            </div>
             {projects.length === 0 ? (
               <div style={{ textAlign: 'center', padding: '40px 0', color: '#6B7280' }}>
                 <p style={{ fontSize: '1.1rem', marginBottom: '8px' }}>No projects yet</p>
                 <p style={{ fontSize: '0.85rem' }}>Click &quot;+ Add Project&quot; to create your first portfolio piece.</p>
               </div>
             ) : (
-              projects.map((project) => (
+              projects.map((project, index) => (
                 <div key={project.id} style={{ borderBottom: '1px solid #e5e7eb', paddingBottom: '20px', marginBottom: '20px' }}>
                   <div className="project-list-item">
+                    {/* Reorder arrows */}
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginRight: '12px', flexShrink: 0 }}>
+                      <button
+                        onClick={() => moveProject(project.id, 'up')}
+                        disabled={index === 0}
+                        title="Move up"
+                        style={{
+                          border: 'none', background: index === 0 ? '#e5e7eb' : '#dbeafe',
+                          cursor: index === 0 ? 'default' : 'pointer', borderRadius: '4px',
+                          padding: '4px 8px', fontSize: '0.75rem', fontWeight: 700,
+                          color: index === 0 ? '#9CA3AF' : '#025D9F', lineHeight: 1,
+                        }}>&#9650;</button>
+                      <span style={{ textAlign: 'center', fontSize: '0.65rem', color: '#9CA3AF', fontWeight: 600 }}>{index + 1}</span>
+                      <button
+                        onClick={() => moveProject(project.id, 'down')}
+                        disabled={index === projects.length - 1}
+                        title="Move down"
+                        style={{
+                          border: 'none', background: index === projects.length - 1 ? '#e5e7eb' : '#dbeafe',
+                          cursor: index === projects.length - 1 ? 'default' : 'pointer', borderRadius: '4px',
+                          padding: '4px 8px', fontSize: '0.75rem', fontWeight: 700,
+                          color: index === projects.length - 1 ? '#9CA3AF' : '#025D9F', lineHeight: 1,
+                        }}>&#9660;</button>
+                    </div>
                     {(project.images?.[0] || project.image) && (
                       <img src={project.images?.[0] || project.image} alt={project.title} />
                     )}

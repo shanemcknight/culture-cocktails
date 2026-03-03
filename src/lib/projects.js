@@ -4,6 +4,7 @@ export async function getProjects() {
   const { data, error } = await supabase
     .from('projects')
     .select('*')
+    .order('display_order', { ascending: true, nullsFirst: false })
     .order('created_at', { ascending: false });
 
   if (error) {

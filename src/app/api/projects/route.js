@@ -19,6 +19,7 @@ function toFrontend(row) {
     seoTitle: row.seo_title || '',
     seoDescription: row.seo_description || '',
     seoKeywords: row.seo_keywords || '',
+    displayOrder: row.display_order ?? 0,
   };
 }
 
@@ -27,6 +28,7 @@ export async function GET() {
   const { data, error } = await supabase
     .from('projects')
     .select('*')
+    .order('display_order', { ascending: true, nullsFirst: false })
     .order('created_at', { ascending: false });
 
   if (error) {
@@ -44,6 +46,14 @@ export async function POST(request) {
   try {
     const project = await request.json();
 
+    // Get the current max display_order so new projects go to the end
+    const { data: existing } = await supabase
+      .from('projects')
+      .select('display_order')
+      .order('display_order', { ascending: false })
+      .limit(1);
+    const maxOrder = existing?.[0]?.display_order ?? -1;
+
     const newProject = {
       title: project.title || '',
       description: project.description || '',
@@ -57,6 +67,7 @@ export async function POST(request) {
       seo_title: project.seoTitle || project.seo_title || '',
       seo_description: project.seoDescription || project.seo_description || '',
       seo_keywords: project.seoKeywords || project.seo_keywords || '',
+      display_order: maxOrder + 1,
     };
 
     const { data, error } = await supabase
@@ -104,6 +115,8 @@ export async function PUT(request) {
     if (updates.seo_description !== undefined) dbUpdates.seo_description = updates.seo_description;
     if (updates.seoKeywords !== undefined) dbUpdates.seo_keywords = updates.seoKeywords;
     if (updates.seo_keywords !== undefined) dbUpdates.seo_keywords = updates.seo_keywords;
+    if (updates.display_order !== undefined) dbUpdates.display_order = updates.display_order;
+    if (updates.displayOrder !== undefined) dbUpdates.display_order = updates.displayOrder;
 
     const { data, error } = await supabase
       .from('projects')
