@@ -135,6 +135,7 @@ img { max-width: 100%; display: block; }
   justify-content: center;
   background: #f3f4f6;
   padding: 2rem;
+  padding-top: 110px;
 }
 .login-box {
   background: #fff;
@@ -168,6 +169,7 @@ img { max-width: 100%; display: block; }
 .admin-layout {
   min-height: 100vh;
   background: #f3f4f6;
+  padding-top: 110px;
 }
 .admin-header {
   background: linear-gradient(135deg, #025D9F, #01497a);
