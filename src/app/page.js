@@ -174,10 +174,10 @@ export default async function HomePage() {
               <div className="relative h-[460px] rounded-2xl overflow-hidden shadow-2xl">
                 <HeroCarousel
                   images={[
-                    { src: '/images/herbs-beaker-outside.jpg', alt: 'Natural herb ingredients in lab glassware with outdoor light' },
+                    { src: '/images/small-beaker-cider-pippette.jpg', alt: 'Precision pipette work on a cider sample in the lab' },
                     { src: '/images/beaker-butterfly-pippette.jpg', alt: 'Pipette mixing a vibrant beverage formula in a beaker' },
                     { src: '/images/juice-bottle-pippettes-beakers.jpg', alt: 'Juice formulation with pipettes and lab beakers' },
-                    { src: '/images/small-beaker-cider-pippette.jpg', alt: 'Precision pipette work on a cider sample in the lab' },
+                    { src: '/images/herbs-beaker-outside.jpg', alt: 'Natural herb ingredients in lab glassware with outdoor light' },
                   ]}
                   interval={5000}
                 />
